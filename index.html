@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Construction Company</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -166,6 +166,46 @@
       </div>
     </div>
     <div class="page" id="users-page">
+      <dialog id="new-user-modal">
+        <form>
+          <h2>New User</h2>
+          <div class="input-list">
+            <div class="form-field-container">
+              <label><span class="material-icons-round">face</span>Full Name</label>
+              <input type="text" placeholder="What's the user's full name?">
+              <p style="color: gray; font-size: var(--font-sm); margin-top: 5px; font-style: italic;">TIP: Give first and last names</p>
+            </div>
+            <div class="form-field-container">
+              <label><span class="material-icons-round">person</span>Role</label>
+              <select>
+                <option>Architect</option>
+                <option>Engineer</option>
+                <option>Developer</option>
+              </select>
+            </div>
+            <div class="form-field-container">
+              <label><span class="material-icons-round">email</span>Email</label>
+              <input type="email" placeholder="What's the user's email?">
+            </div>
+            <div class="form-field-container">
+              <label><span class="material-icons-round">vpn_key</span>Password</label>
+              <input type="password" placeholder="What's the user's password?">
+            </div>
+            <div class="form-field-container">
+              <label><span class="material-icons-round">vpn_key</span>Confirm Password</label>
+              <input type="password" placeholder="Confirm the user's password">
+            </div>
+            <div class="form-field-container">
+              <label><span class="material-icons-round">photo</span>Avatar</label>
+              <input type="file" accept="image/*">
+            </div>
+            <div style="display: flex; margin: 10px 0px 10px auto; column-gap: 10px;">
+              <button style="background-color: transparent;">Cancel</button>
+              <button style="background-color: rgb(18, 145, 18);">Accept</button>
+            </div>
+          </div>
+        </form>
+      </dialog>
         <header>
             <h2>Users</h2>
             <div>
@@ -173,13 +213,12 @@
             </div>
         </header>
         <div class="main-page-content">
-            <table id="users-list" width="100%" stile="border:none;" cellspacing="0" cellpadding="0">
+            <table id="users-list" width="60%" style="border:none;min-width:500px;max-width:1200px;margin-left: auto;margin-right: auto;" cellspacing="0" cellpadding="0">
                 <thead>
                     <tr>
                         <th width="30%">Name</th>
                         <th width="30%">Email</th>
                         <th width="20%">Role</th>
-                        <th width="20%">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -190,7 +229,6 @@
                         </td>
                         <td>John.Doe@example.com</td>
                         <td>Admin</td>
-                        <td>CRDE</td>
                     </tr>
                     <tr>
                         <td style="display: flex; align-items: center; width:100%; justify-content: center;">
@@ -199,8 +237,23 @@
                         </td>
                         <td>Anna.Smith@example.com</td>
                         <td>Admin</td>
-                        <td>CRDE</td>
                     </tr>
+                    <tr>
+                      <td style="display: flex; align-items: center; width:100%; justify-content: center;">
+                          <img src="./assets/user-avatar2.svg" alt="User Avatar" class="user-avatar">
+                          <span style="margin-left: 10px;">Rob Thomas</span>
+                      </td>
+                      <td>Rob.Thomas@example.com</td>
+                      <td>User</td>
+                  </tr>
+                  <tr>
+                    <td style="display: flex; align-items: center; width:100%; justify-content: center;">
+                        <img src="./assets/user-avatar3.svg" alt="User Avatar" class="user-avatar">
+                        <span style="margin-left: 10px;">Sarah Jordan</span>
+                    </td>
+                    <td>Sarah.Jordan@example.com</td>
+                    <td>User</td>
+                  </tr>
                 </tbody>
             </table>
         </div>

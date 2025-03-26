@@ -9,6 +9,13 @@
   --background: #202124;
   --background-100: #26282b;
   --background-200: #3b3c3f;
+  --background-300: #4f5052;
+  --background-400: #6b6c6f;
+  --background-500: #969696;
+  --background-600: #b0b0b0;
+  --background-700: #d0d0d0;
+  --background-800: #e0e0e0;
+  --background-900: #f0f0f0;
   --font-xs: 10px;
   --font-sm: 12px;
   --font-base: 14px;
@@ -266,6 +273,8 @@ input:focus, textarea:focus, select:focus {
   background-color: var(--primary);
 }
 
+/* Users details page */
+
 #users-list td {
     display: table-cell;
     text-align: center;
@@ -282,7 +291,8 @@ input:focus, textarea:focus, select:focus {
 }
 
 .user-avatar {
-    width: 40px; 
-    height: 40px; 
-    border-radius: 100%;    
+    width: 100px; 
+    height: 100px; 
+    border-radius: 100%; 
+    background-color: var(--background-500);   
 }
