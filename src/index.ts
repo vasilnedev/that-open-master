@@ -1,7 +1,7 @@
 import { IProject , ProjectStatus , UserRole } from "./classes/Project.ts"
 import { ProjectsManager } from "./classes/ProjectsManager.ts"
 
-// This function receives the ID of a modal dialog and toggles its visibility.
+// Toggle modal dialog visibility.
 const toggleModal = ( id:string ) => {
   const modal = document.getElementById( id )
   if ( modal && modal instanceof HTMLDialogElement ) {
@@ -11,10 +11,11 @@ const toggleModal = ( id:string ) => {
   }
 }
 
+// Container to render all projects and initialize the ProjectsManager.
 const projectsListUI = document.getElementById( "projects-list" ) as HTMLDivElement
 const projectsManager = new ProjectsManager( projectsListUI ) 
 
-// This document object is provided by the browser, and its main purpose is to help us interact with the DOM.
+// New project button event handling - open the new project form.
 const newProjectBtn = document.getElementById("new-project-btn")
 if (newProjectBtn) {
   newProjectBtn.addEventListener("click", () => toggleModal("new-project-modal"))
@@ -22,16 +23,14 @@ if (newProjectBtn) {
   console.warn("New projects button was not found")
 }
 
+// New project form events handling
 const projectForm = document.getElementById("new-project-form")
 if ( projectForm && projectForm instanceof HTMLFormElement ) {
-  // Close the dialog when press Cancel button
-  projectForm.addEventListener("reset", e => {
-    if( projectForm.parentElement && projectForm.parentElement instanceof HTMLDialogElement ){
-      toggleModal("new-project-modal")
-    }
-  })
+
+  // Reset event when Cancel button is pressed. Clears and closes the form.
+  projectForm.addEventListener("reset", e => toggleModal("new-project-modal"))
   
-  // Handle the form submission
+  // Submit event when Accept button is pressed
   projectForm.addEventListener("submit", e => {
     e.preventDefault()
     const formData = new FormData( projectForm )
@@ -43,8 +42,7 @@ if ( projectForm && projectForm instanceof HTMLFormElement ) {
       finishDate: new Date( formData.get("finishDate") as string )
     }
     const project = projectsManager.newProject( data )
-    console.log( project )
-    projectForm.reset()
+    projectForm.reset() // Triggers the reset event to clear the form and close the form
   })
 } else {
 	console.warn("The project form was not found. Check the ID!")

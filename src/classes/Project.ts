@@ -9,6 +9,8 @@ export interface IProject{
   finishDate: Date
 }
 
+// The Project class represents a project with its properties and methods.
+// It also contains the UI elements to render the project in the DOM.
 export class Project implements IProject{
   name: string
   description: string
@@ -26,11 +28,11 @@ export class Project implements IProject{
     this.status = data.status
     this.userRole = data.userRole
     this.finishDate = data.finishDate
-    this.setUI()
+    this.render()
   }
 
-  setUI() {
-    if( this.ui ) return // Avoid creating the UI again
+  render() {
+    if( this.ui ) return // Avoid duplicating the UI
     this.ui = document.createElement("div")
     this.ui.className = "project-card"
     this.ui.innerHTML = `
