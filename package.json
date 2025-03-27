@@ -1,0 +1,26 @@
+{
+  "name": "that-open-master",
+  "version": "0.0.0",
+  "description": "That Open Master training programme",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite --host"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasilnedev/that-open-master.git"
+  },
+  "keywords": [
+    "that-open-master"
+  ],
+  "author": "Vasil Nedev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vasilnedev/that-open-master/issues"
+  },
+  "homepage": "https://github.com/vasilnedev/that-open-master#readme",
+  "devDependencies": {
+    "typescript": "^5.8.2",
+    "vite": "^6.2.3"
+  }
+}
