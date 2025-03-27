@@ -30,4 +30,28 @@ export class ProjectsManager {
     this.list.push( project )
     return project
   }
+
+  getProject( id:string ){
+    return this.list.find( project => project.id === id )
+  }
+
+  getProjectByName( name:string ){
+    return this.list.find( project => project.name === name )
+  }
+
+  getTotalCost(){
+    return this.list.reduce( ( total, project) => total + project.cost, 0 )
+  }
+
+  deleteProject( id:string ){
+    const index = this.list.findIndex( project => project.id === id )
+    if( index === -1 ) return
+    this.list[index].ui.remove()
+    this.list.splice( index, 1 )
+  }
+
+  exportToJSON(){}
+
+  importFromJSON(){}
+
 }
