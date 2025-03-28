@@ -26,12 +26,10 @@ export class Project implements IProject{
   ui: HTMLDivElement
 
   constructor( data: IProject ){
-    this.name = data.name
-    this.description = data.description
-    this.status = data.status
-    this.userRole = data.userRole
-    this.finishDate = data.finishDate
-    this.id = uuidv4()
+    for( const key in data ){
+      this[key] = data[key]
+    }
+    if( !this.id ) this.id = uuidv4() // Preserve id if exists
     this.render()
   }
 
@@ -64,6 +62,7 @@ export class Project implements IProject{
           <p style="color: #969696;">Estimated Progress</p>
           <p>${ this.progress}%</p>
         </div>
+        <div style="font-size:x-small;" >PID: ${this.id}</div>
       </div>
     `
   }

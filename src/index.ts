@@ -46,9 +46,25 @@ if ( projectForm && projectForm instanceof HTMLFormElement ) {
       const project = projectsManager.newProject( data )
       projectForm.reset() // Triggers the reset event to clear the form and close the form
     } catch (error) {
+      console.error( error )
       errorMsg.showError( `Creating the project: ${error}` )
     }
   })
 } else {
 	console.warn("The project form was not found. Check the ID!")
 }
+
+const exportProjectsBtn = document.getElementById("export-projects-btn")
+if ( exportProjectsBtn ) {
+  exportProjectsBtn.addEventListener("click", e => projectsManager.exportToJSON() )
+} else {
+	console.warn("The export projects button was not found. Check the ID!")
+}
+
+const importProjectsBtn = document.getElementById("import-projects-btn")
+if ( importProjectsBtn ) {
+  importProjectsBtn.addEventListener("click", e => projectsManager.importFromJSON() )
+} else {
+	console.warn("The import projects button was not found. Check the ID!")
+}
+

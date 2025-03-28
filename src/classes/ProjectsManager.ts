@@ -1,4 +1,5 @@
 import { Project, IProject } from './Project'
+import errorMsg from "./ErrorMsg.ts"
 
 // The ProjectsManager class is responsible for managing the list of projects
 // and rendering them in the UI.
@@ -53,8 +54,44 @@ export class ProjectsManager {
     this.list.splice( index, 1 )
   }
 
-  exportToJSON(){}
+  exportToJSON( fileName:string = "projects.json" ){
+    const json = JSON.stringify( this.list, null ,2)
+    const blob = new Blob( [json], { type: "application/json" } )
+    const url = URL.createObjectURL( blob )
+    const link = document.createElement( "a" )
+    link.href = url
+    link.download = fileName
+    link.click()
+    URL.revokeObjectURL( url )
+  }
 
-  importFromJSON(){}
+  importFromJSON(){
+    const input = document.createElement( "input" )
+    input.type = "file"
+    input.accept = "application/json"
+    const reader = new FileReader()
+    reader.addEventListener( "load", e => {
+      const json = reader.result
+      if( !json ) return
+      this.list = []         // clear the list
+      this.ui.innerHTML = "" // clear the UI
+      const projects: Project[] = JSON.parse( json as string )
+      for( const project of projects ){
+        try {
+          project.ui = undefined as unknown as HTMLDivElement // Clear the UI from JSON
+          this.newProject( project )
+        } catch (error) {
+          console.error( error )
+          errorMsg.showError( `Uploading projects: ${error}` )
+        }
+      }
+    })
+    input.addEventListener( "change", e => {
+      const fileList = input.files
+      if( !fileList ) return
+      reader.readAsText( fileList[0] )
+    })
+    input.click()
+  }
 
 }
