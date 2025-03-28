@@ -1,5 +1,6 @@
 import { IProject , ProjectStatus , UserRole } from "./classes/Project.ts"
 import { ProjectsManager } from "./classes/ProjectsManager.ts"
+import errorMsg from "./classes/ErrorMsg.ts"
 
 // Toggle modal dialog visibility.
 const toggleModal = ( id:string ) => {
@@ -41,8 +42,12 @@ if ( projectForm && projectForm instanceof HTMLFormElement ) {
       userRole: formData.get("userRole") as UserRole,
       finishDate: new Date( formData.get("finishDate") as string )
     }
-    const project = projectsManager.newProject( data )
-    projectForm.reset() // Triggers the reset event to clear the form and close the form
+    try {
+      const project = projectsManager.newProject( data )
+      projectForm.reset() // Triggers the reset event to clear the form and close the form
+    } catch (error) {
+      errorMsg.showError( `Creating the project: ${error}` )
+    }
   })
 } else {
 	console.warn("The project form was not found. Check the ID!")

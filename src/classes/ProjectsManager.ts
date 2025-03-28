@@ -25,6 +25,9 @@ export class ProjectsManager {
 
   // A method to add a new project to the list
   newProject( data: IProject ) {
+    const projectNames = this.list.map( project => project.name )
+    const nameInUse = projectNames.includes( data.name )
+    if( nameInUse ) throw new Error( `The project name "${data.name}" is already in use` )
     const project = new Project( data )
     this.ui.appendChild( project.ui )
     this.list.push( project )

@@ -6,6 +6,8 @@
   --primary-200: #415A66;
   --primary-300: #017CB3;
   --primary-400: #50B6E6;
+  --accent-background: #a0a000;
+  --accent-color: #631a08;
   --background: #202124;
   --background-100: #26282b;
   --background-200: #3b3c3f;
@@ -295,4 +297,18 @@ input:focus, textarea:focus, select:focus {
     height: 100px; 
     border-radius: 100%; 
     background-color: var(--background-500);   
+}
+
+/* Error message */
+
+.error-msg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background-color: var(--accent-background);
+  color: var(--accent-color);
+  font-size: x-large;
+  padding: 10px;
+  border: 0px;
 }
