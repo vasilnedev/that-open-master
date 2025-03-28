@@ -68,3 +68,15 @@ if ( importProjectsBtn ) {
 	console.warn("The import projects button was not found. Check the ID!")
 }
 
+const projectsNavBtn = document.getElementById("projects-nav-btn")
+if ( projectsNavBtn ) {
+  projectsNavBtn.addEventListener("click", e => {
+    const projectsPage = document.getElementById( "projects-page" )
+    const detailsPage = document.getElementById( "project-details" )
+    if( !projectsPage || ! detailsPage ) return
+    projectsPage.style.display = "flex"
+    detailsPage.style.display = "none"
+  })
+} else {
+	console.warn("The projects navigation button was not found. Check the ID!")
+}

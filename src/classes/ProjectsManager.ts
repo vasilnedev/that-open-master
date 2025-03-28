@@ -30,6 +30,13 @@ export class ProjectsManager {
     const nameInUse = projectNames.includes( data.name )
     if( nameInUse ) throw new Error( `The project name "${data.name}" is already in use` )
     const project = new Project( data )
+    project.ui.addEventListener( "click", e => {
+      const projectsPage = document.getElementById( "projects-page" )
+      const detailsPage = document.getElementById( "project-details" )
+      if( !projectsPage || ! detailsPage ) return
+      projectsPage.style.display = "none"
+      detailsPage.style.display = "flex"
+    })
     this.ui.appendChild( project.ui )
     this.list.push( project )
     return project
