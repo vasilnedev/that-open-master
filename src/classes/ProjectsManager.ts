@@ -36,10 +36,22 @@ export class ProjectsManager {
       if( !projectsPage || ! detailsPage ) return
       projectsPage.style.display = "none"
       detailsPage.style.display = "flex"
+      this.setDetailsPage( project )
     })
     this.ui.appendChild( project.ui )
     this.list.push( project )
     return project
+  }
+
+  private setDetailsPage( project: Project){
+    const detailsPage = document.getElementById( "project-details" )
+    if( !detailsPage ) return
+    for( const property in project){
+      const elements = detailsPage.querySelectorAll( `[data-project-info="${ property }"]` )
+      if( elements ){ 
+        elements.forEach( element => element.textContent = project[ property ] )
+      }
+    }
   }
 
   getProject( id:string ){
