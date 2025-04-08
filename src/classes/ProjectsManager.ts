@@ -29,6 +29,7 @@ export class ProjectsManager {
     const projectNames = this.list.map( project => project.name )
     const nameInUse = projectNames.includes( data.name )
     if( nameInUse ) throw new Error( `The project name "${data.name}" is already in use` )
+    if( data.name.length < 5 ) throw new Error( `The project name "${data.name}" is too short. It must be at least 5 characters long!` )
     const project = new Project( data )
     project.ui.addEventListener( "click", e => {
       const projectsPage = document.getElementById( "projects-page" )
@@ -49,7 +50,52 @@ export class ProjectsManager {
     for( const property in project){
       const elements = detailsPage.querySelectorAll( `[data-project-info="${ property }"]` )
       if( elements ){ 
-        elements.forEach( element => element.textContent = project[ property ] )
+        elements.forEach( element => {
+          if( project[ property ] instanceof Date ){
+            element.textContent = ( project[ property ] as Date ).toLocaleDateString()
+          }else if( property === "progress" ){
+            element.textContent = project[ property ] + "%"
+            const htmlElement = element as HTMLElement
+            htmlElement.style.width = project[ property ] + "%"
+          }
+          else{
+            element.textContent = project[ property ] 
+          }
+        })
+      }
+    }
+    // Set initials
+    const elInitials = detailsPage.querySelector( `[data-project-initials=""]` )
+    if( elInitials ){
+      const initials = project.name
+      .split(" ")
+      .slice(0, 2)
+      .map(word => word[0].toUpperCase())
+      .join("")
+      elInitials.textContent = initials
+    }
+    // Set Edit Form
+    const editForm = document.getElementById( "edit-project-modal" )
+    if( editForm ){
+      for( const property in project){
+        if( property === "userRole" || property === "status" ){
+          const element = editForm.querySelector( `[name="${ property }"]` ) as HTMLSelectElement
+          if( element ){
+            Array.from( element.options ).forEach( option => {
+              if ( option.value.toLowerCase() === project[ property ].toLowerCase() ) option.selected = true
+            })
+          }
+        }else{
+          const element = editForm.querySelector( `[name="${ property }"]` ) as HTMLInputElement
+          if( element ){
+            if( project[ property ] instanceof Date ){
+              element.value = project[ property ].toISOString().split("T")[0]
+            }
+            else{
+              element.value = project[ property ]
+            }
+          }
+        }
       }
     }
   }
@@ -98,6 +144,7 @@ export class ProjectsManager {
       for( const project of projects ){
         try {
           project.ui = undefined as unknown as HTMLDivElement // Clear the UI from JSON
+          project.finishDate = new Date( project.finishDate ) // Convert finishDate feom string to Date
           this.newProject( project )
         } catch (error) {
           console.error( error )

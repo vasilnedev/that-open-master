@@ -2,6 +2,17 @@ import { IProject , ProjectStatus , UserRole } from "./classes/Project.ts"
 import { ProjectsManager } from "./classes/ProjectsManager.ts"
 import errorMsg from "./classes/ErrorMsg.ts"
 
+// Set the default date for the finishDate input field to today's date.
+// Get today's date in the format YYYY-MM-DD
+const today = new Date().toISOString().split('T')[0]
+const dateInput = document.querySelector('input[name="finishDate"]') as HTMLInputElement
+if (dateInput) {
+  dateInput.setAttribute('min', today); // Set the minimum date to today
+  dateInput.setAttribute('value', today); // Set the default value to today
+} else {
+  console.warn("The date input was not found. Check the ID!")
+}
+
 // Toggle modal dialog visibility.
 const toggleModal = ( id:string ) => {
   const modal = document.getElementById( id )
@@ -54,6 +65,7 @@ if ( projectForm && projectForm instanceof HTMLFormElement ) {
 	console.warn("The project form was not found. Check the ID!")
 }
 
+// Export and import projects buttons event handling
 const exportProjectsBtn = document.getElementById("export-projects-btn")
 if ( exportProjectsBtn ) {
   exportProjectsBtn.addEventListener("click", e => projectsManager.exportToJSON() )
@@ -68,15 +80,81 @@ if ( importProjectsBtn ) {
 	console.warn("The import projects button was not found. Check the ID!")
 }
 
+// Main page navigation buttons event handling
+const switchPage = pageId => {
+  const pageIds = [
+    "projects-page",
+    "project-details",
+    "users-page"
+  ]
+  if(!pageIds.includes(pageId)) return
+  pageIds.forEach( id => {
+    const page = document.getElementById( id )
+    if( !page ) return
+    if( id === pageId ) {
+      page.style.display = "flex"
+    } else {
+      page.style.display = "none"
+    }
+  })
+}
+
 const projectsNavBtn = document.getElementById("projects-nav-btn")
 if ( projectsNavBtn ) {
-  projectsNavBtn.addEventListener("click", e => {
-    const projectsPage = document.getElementById( "projects-page" )
-    const detailsPage = document.getElementById( "project-details" )
-    if( !projectsPage || ! detailsPage ) return
-    projectsPage.style.display = "flex"
-    detailsPage.style.display = "none"
-  })
-} else {
+  projectsNavBtn.addEventListener("click", e => switchPage( "projects-page" )
+)} else {
 	console.warn("The projects navigation button was not found. Check the ID!")
 }
+
+const usersNavBtn = document.getElementById("users-nav-btn")
+if ( usersNavBtn ) {
+  usersNavBtn.addEventListener("click", e => switchPage( "users-page" )
+)} else {
+	console.warn("The users navigation button was not found. Check the ID!")
+}
+
+// Edit project button event handling - open the Edit Project Form.
+const editProjectBtn = document.getElementById("edit-project-btn")
+if (editProjectBtn) {
+  editProjectBtn.addEventListener("click", () => toggleModal("edit-project-modal"))
+} else {
+  console.warn("Edit projects button was not found")
+}
+
+// Edit project form events handling
+const editForm = document.getElementById("edit-project-form")
+if ( editForm && editForm instanceof HTMLFormElement ) {
+  
+  // Submit event when Accept button is pressed
+  editForm.addEventListener("submit", e => {
+    e.preventDefault()
+    toggleModal("edit-project-modal")
+    if( e && e.submitter && e.submitter['name'] === 'accept' ){
+      const formData = new FormData( editForm )
+
+      const data = {
+        id: formData.get("id") as string,
+        name: formData.get("name") as string,
+        description: formData.get("description") as string,
+        status: formData.get("status") as ProjectStatus,
+        userRole: formData.get("userRole") as UserRole,
+        finishDate: new Date( formData.get("finishDate") as string ),
+        cost: parseInt( formData.get("cost") as string ),
+        progress: parseInt( formData.get("progress") as string ),
+      }
+      try { 
+        const project = projectsManager.deleteProject( data.id )
+        projectsManager.newProject( data )
+        switchPage( "projects-page" )
+      } catch (error) {
+        console.error( error )
+        errorMsg.showError( `Editing project: ${error}` )
+      }
+    }else{
+      console.warn("The form was cancelled")
+    }
+  })
+} else {
+	console.warn("The project form was not found. Check the ID!")
+}
+
